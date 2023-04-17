@@ -37,7 +37,7 @@ async function getCategoriesTotalValue() {
       categories[product.category] = product.price;
     }
   });
-  console.log("Categories: ", categories);
+  console.log("Categories and its values: ", categories);
   console.log("----------------------------");
   return categories;
 }
@@ -48,10 +48,10 @@ async function getCartWithHighestValue() {
   await getProductsData();
   await getUsersData();
   let highestValue = 0;
+  let highestValueId = 0;
   let userFullName = "";
 
   carts.forEach((cart) => {
-    console.log("Carts: ", cart);
     const cartProducts = cart.products;
     let cartValue = 0;
     cartProducts.forEach((cartProduct) => {
@@ -62,20 +62,17 @@ async function getCartWithHighestValue() {
       cartValue += productPrice * cartProduct.quantity;
       if (cartValue > highestValue) {
         highestValue = cartValue;
-        const findUser = users.find((user) => user.id === cartProduct.userId);
-        console.log(`find user is ${findUser}`);
+        highestValueId = cart.userId;
       }
     });
   });
-  console.log("--------------------------", highestValue);
-  /*carts.forEach((cart) => {
-    const cartValue = cart.products.reduce((total, product) => {
-      return total + product.price;
-    }, 0);
-    console.log(cart.products);
-
-    console.log(cartValue);
-  });*/
+  userFullName =
+    users.find((user) => user.id === highestValueId).name.firstname +
+    " " +
+    users.find((user) => user.id === highestValueId).name.lastname;
+  console.log(`The largest cart value is: ${highestValue}`);
+  console.log(`Owner of the largest cart is: ${userFullName}`);
+  console.log("----------------------------");
 }
 
 getCategoriesTotalValue();
