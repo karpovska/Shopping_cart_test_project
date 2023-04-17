@@ -1,55 +1,82 @@
 import fetch from "node-fetch";
 
+let users = {};
+let products = {};
+let carts = {};
+
 async function getUsersData() {
   const response = await fetch("https://fakestoreapi.com/users");
-  const usersData = await response.json();
-  console.log("Users:");
-  //console.log(usersData);
-  return usersData;
+  users = await response.json();
+  return users;
+}
+
+async function getProductsData() {
+  const response = await fetch("https://fakestoreapi.com/products");
+  products = await response.json();
+  return products;
 }
 
 async function getCartsData() {
   const response = await fetch(
     "https://fakestoreapi.com/carts/?startdate=2000-01-01&enddate=2023-04-07"
   );
-  const cartsData = await response.json();
-  console.log("Carts:");
-  //console.log(cartsData);
-  return cartsData;
+  carts = await response.json();
+  return carts;
 }
 
-async function getProductsData() {
-  const response = await fetch("https://fakestoreapi.com/products");
-  const productsData = await response.json();
-  console.log("Products:");
-  //console.log(productsData);
-
-  const productToPriceMap = new Map();
-
-  for (const product of productsData) {
-    productToPriceMap.set(product.id, product.price);
-  }
-
-  //console.log(productToPriceMap);
-  return productsData;
-}
-
+//function that creates a data structure containing all available product categories and the total value of products of a given category
 async function getCategoriesTotalValue() {
-  const products = await getProductsData();
+  await getProductsData();
+  let categories = {};
 
-  const categoriesValues = {};
   products.forEach((product) => {
-    if (categoriesValues[product.category]) {
-      categoriesValues[product.category] += product.price;
+    //if our product category already exists in categories object then increase total value
+    if (categories[product.category]) {
+      categories[product.category] += product.price;
     } else {
-      categoriesValues[product.category] = product.price;
+      categories[product.category] = product.price;
     }
   });
-  console.log(categoriesValues);
-  return categoriesValues;
+  console.log("Categories: ", categories);
+  console.log("----------------------------");
+  return categories;
 }
 
-getUsersData();
-getCartsData();
-getProductsData();
+//function that finds a cart with the highest value, determines its value and full name of its owner
+async function getCartWithHighestValue() {
+  await getCartsData();
+  await getProductsData();
+  await getUsersData();
+  let highestValue = 0;
+  let userFullName = "";
+
+  carts.forEach((cart) => {
+    console.log("Carts: ", cart);
+    const cartProducts = cart.products;
+    let cartValue = 0;
+    cartProducts.forEach((cartProduct) => {
+      const productWithPrice = products.find(
+        (product) => product.id === cartProduct.productId
+      );
+      const productPrice = productWithPrice.price;
+      cartValue += productPrice * cartProduct.quantity;
+      if (cartValue > highestValue) {
+        highestValue = cartValue;
+        const findUser = users.find((user) => user.id === cartProduct.userId);
+        console.log(`find user is ${findUser}`);
+      }
+    });
+  });
+  console.log("--------------------------", highestValue);
+  /*carts.forEach((cart) => {
+    const cartValue = cart.products.reduce((total, product) => {
+      return total + product.price;
+    }, 0);
+    console.log(cart.products);
+
+    console.log(cartValue);
+  });*/
+}
+
 getCategoriesTotalValue();
+getCartWithHighestValue();
