@@ -1,0 +1,24 @@
+{
+  "name": "openx",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "type": "module",
+  "dependencies": {
+    "node-fetch": "^3.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karpovska/Shopping_cart_test_project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/karpovska/Shopping_cart_test_project/issues"
+  },
+  "homepage": "https://github.com/karpovska/Shopping_cart_test_project#readme"
+}
