@@ -4,15 +4,23 @@
   "description": "",
   "main": "script.js",
   "type": "module",
-  "dependencies": {
+  "dependencies": {    
     "immutable": "^4.3.0",
     "node-fetch": "^3.3.1",
     "stream": "0.0.2",
-    "sweetalert2": "^11.7.3"
+    "sweetalert2": "^11.7.3",
+    "ts-jest": "^29.1.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    
+    "babel-jest": "^29.5.0",
+    "cross-env": "^7.0.3",
+    "jest": "^29.4.3",
+    "jest-esm-transformer": "^1.0.0",
+    "lit": "^2.6.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "repository": {
     "type": "git",

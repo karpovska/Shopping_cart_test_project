@@ -111,3 +111,12 @@ async function getFurthestUsers() {
 getCategoriesTotalValue();
 getCartWithHighestValue();
 getFurthestUsers();
+
+export {
+  getCartsData,
+  getProductsData,
+  getUsersData,
+  getCartWithHighestValue,
+  getCategoriesTotalValue,
+  getFurthestUsers,
+};
